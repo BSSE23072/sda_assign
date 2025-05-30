@@ -1,0 +1,85 @@
+ // Retrieve employee salary data from localStorage
+        function populateSalaryTable() {
+            const salaryData = JSON.parse(localStorage.getItem('employeeSalaries')) || [];
+            const tableBody = document.getElementById('salary-table-body');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            if (salaryData.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="2" class="text-center">No salary data available</td></tr>`;
+            } else {
+                salaryData.forEach(salaryEntry => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${salaryEntry.employeeID}</td>
+                        <td>${salaryEntry.salary}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        // Function to handle form submission and save salary data
+        document.getElementById('salary-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the data from the form
+            const employeeID = document.getElementById('employee-id').value;
+            const salary = document.getElementById('salary').value;
+
+            // Create an employee salary object
+            const salaryEntry = {
+                employeeID,
+                salary
+            };
+
+            // Retrieve existing salary data from localStorage
+            let salaryData = JSON.parse(localStorage.getItem('employeeSalaries')) || [];
+
+            // Add the new salary entry to the list
+            salaryData.push(salaryEntry);
+
+            // Save the updated salary data back to localStorage
+            localStorage.setItem('employeeSalaries', JSON.stringify(salaryData));
+
+            // Clear the form fields
+            document.getElementById('employee-id').value = '';
+            document.getElementById('salary').value = '';
+
+            // Re-populate the salary list
+            populateSalaryTable();
+        });
+
+        // Function to handle updating salary by employee ID
+        document.getElementById('update-salary-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const employeeID = document.getElementById('search-id').value;
+            const newSalary = document.getElementById('new-salary').value;
+
+            // Retrieve salary data from localStorage
+            let salaryData = JSON.parse(localStorage.getItem('employeeSalaries')) || [];
+
+            // Find the employee by ID and update their salary
+            const employeeIndex = salaryData.findIndex(entry => entry.employeeID === employeeID);
+            
+            if (employeeIndex !== -1) {
+                // Update the salary
+                salaryData[employeeIndex].salary = newSalary;
+
+                // Save the updated salary data back to localStorage
+                localStorage.setItem('employeeSalaries', JSON.stringify(salaryData));
+
+                // Re-populate the salary list with updated data
+                populateSalaryTable();
+
+                // Clear the input fields
+                document.getElementById('search-id').value = '';
+                document.getElementById('new-salary').value = '';
+                alert('Salary updated successfully!');
+            } else {
+                alert('Employee not found with this ID!');
+            }
+        });
+
+        // Populate the salary table when the page loads
+        window.onload = populateSalaryTable;

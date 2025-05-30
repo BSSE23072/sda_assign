@@ -1,0 +1,21 @@
+    // Check if the user is logged in before accessing this page
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        // Redirect to login page if not logged in
+        window.location.href = 'login.html';
+    }
+
+    // Load and display the user data
+    const usersList = JSON.parse(localStorage.getItem('usersList')) || [];
+
+    const tbody = document.getElementById('signupListBody');
+    usersList.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.fullName}</td>
+            <td>${user.email}</td>
+            <td>${user.username}</td>
+            <td>${user.password}</td>
+        `;
+        tbody.appendChild(row);
+    });

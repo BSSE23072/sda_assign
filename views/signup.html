@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Human Resources Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      background-image: url('321.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body style="background-color: black;">
+  <div class="container" style="display:flex; border: 2px solid white; width:550px; height: 500px; margin-left: 450px; margin-top: 200px; border-radius: 2px;">
+    <form id="signupForm">
+      <h1 style="margin-left: 10px; font-family: 'Times New Roman', Times, serif; color: white;">Sign-up Form!</h1>
+      <text id="Name" style="color: red;"></text>
+      <text id="Name2" style="color: red;"></text>
+      <br/>
+
+      <t style="margin-left: 10px; color: aliceblue;">Full Name:</t><br/>
+      <input type="text" id="F-1" name="name" style="background-color: white; width:300px; height: 25px; margin-left: 10px; border-radius: 2px;" required><br>
+
+      <t style="margin-left: 10px; color: aliceblue;">Email:</t><br/>
+      <input type="email" id="F-2" name="email" style="background-color: white; width:300px; height: 25px; margin-left: 10px; border-radius: 2px;" required><br>
+      <span id="emailError" style="color: red;"></span><br/>
+
+      <t style="margin-left: 10px; color: aliceblue;">User Name:</t><br/>
+      <input type="text" id="F-4" name="username" style="background-color: white; width:300px; height: 25px; margin-left: 10px; border-radius: 2px;" required><br/>
+
+      <t style="margin-left: 10px; color: aliceblue;">Password:</t><br/>
+      <input type="password" id="F-3" name="password" style="background-color: white; width:300px; height: 25px; margin-left: 10px; border-radius: 2px;" required><br>
+      <span id="passwordError" style="color: red;"></span><br/>
+
+      <t style="margin-left: 10px; color: aliceblue;">Confirm Password:</t><br/>
+      <input type="password" id="F-5" name="confirmPassword" style="background-color: white; width:300px; height: 25px; margin-left: 10px; border-radius: 2px;" required><br>
+
+      <button  type="submit" style="width: 110px; height: 40px; background-color: black; border-radius: 3px; color: aliceblue; margin-top: 15px; margin-left: 380px; border-color: aliceblue;">
+        REGISTER
+      </button>
+    </form>
+  </div>
+
+  <script>
+    // Email validation
+    $('#F-2').on('input', function () {
+      const email = $(this).val();
+      const regex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      $('#emailError').text(regex.test(email) ? '' : 'Invalid email format');
+    });
+
+    // Password validation
+    $('#F-3').on('input', function () {
+      const password = $(this).val();
+      const minLength = 8;
+      const regex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;
+      $('#passwordError').text(password.length < minLength
+        ? `Password must be at least ${minLength} characters`
+        : !regex.test(password)
+        ? 'Password must contain at least one letter and one number'
+        : '');
+    });
+
+    // Save user to localStorage
+ 
+
+
+    document.getElementById('signupForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const employeeData = {
+                
+                fullName: document.getElementById('F-1').value,
+                email: document.getElementById('F-2').value,
+                username: document.getElementById('F-4').value,
+                password: document.getElementById('F-3').value,
+                confirmPassword: document.getElementById('F-5').value,
+            };
+
+            try {
+                const response = await fetch('/api/signups', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(employeeData)
+                });
+
+                // if (!response.ok) throw new Error('Failed to add employee');
+
+                alert('SignUP information added successfully!');
+                document.getElementById('signupForm').reset();
+                window.location.href = 'dashboard.html'; // Redirect here
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+  </script>
+</body>
+</html>

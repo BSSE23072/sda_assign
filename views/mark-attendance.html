@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark or Update Attendance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('111.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            height: 100vh;
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        .form-label {
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header" style="background-color: rgba(0, 0, 0, 0.6); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <img src="logo.png" alt="HRM Logo" style="height: 50px;">
+        <nav>
+            <a href="dashboard.html" style="color: aliceblue; margin: 0 15px; text-decoration: none; font-size: 18px;">Back to Dashboard</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Two Buttons to choose between marking and updating attendance -->
+        <div class="text-center">
+            <button id="mark-attendance-btn" class="btn btn-primary" style="width: 45%;">Mark Attendance</button>
+            <button id="update-attendance-btn" class="btn btn-secondary" style="width: 45%;">Update Attendance</button>
+        </div>
+
+        <div id="attendance-form-section">
+            <h1 class="text-center">Mark Attendance</h1>
+            <form id="attendance-form">
+                <div class="mb-3">
+                    <label for="attendance-date" class="form-label">Select Date</label>
+                    <input type="date" class="form-control" id="attendance-date" name="attendance-date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="employee-id" class="form-label">Enter Employee ID</label>
+                    <input type="text" class="form-control" id="employee-id" name="employee-id" placeholder="Enter Employee ID" required>
+                </div>
+                <div class="mb-3">
+                    <label for="in-time" class="form-label">In Time</label>
+                    <input type="time" class="form-control" id="in-time" name="in-time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="out-time" class="form-label">Out Time</label>
+                    <input type="time" class="form-control" id="out-time" name="out-time" required>
+                </div>
+                <button type="submit" class="btn btn-light" style="width: 100%;">Submit Attendance</button>
+            </form>
+        </div>
+
+        <div id="update-attendance-form-section" style="display: none;">
+            <h1 class="text-center">Update Attendance</h1>
+            <form id="update-attendance-form">
+                <div class="mb-3">
+                    <label for="update-employee-id" class="form-label">Enter Employee ID</label>
+                    <input type="text" class="form-control" id="update-employee-id" name="update-employee-id" placeholder="Enter Employee ID" required>
+                </div>
+                <div class="mb-3">
+                    <label for="update-attendance-date" class="form-label">Select Date</label>
+                    <input type="date" class="form-control" id="update-attendance-date" name="update-attendance-date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="update-in-time" class="form-label">Updated In Time</label>
+                    <input type="time" class="form-control" id="update-in-time" name="update-in-time">
+                </div>
+                <div class="mb-3">
+                    <label for="update-out-time" class="form-label">Updated Out Time</label>
+                    <input type="time" class="form-control" id="update-out-time" name="update-out-time">
+                </div>
+                <button type="submit" class="btn btn-light" style="width: 100%;">Update Attendance</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between Mark Attendance and Update Attendance sections
+        document.getElementById('mark-attendance-btn').addEventListener('click', function() {
+            document.getElementById('attendance-form-section').style.display = 'block';
+            document.getElementById('update-attendance-form-section').style.display = 'none';
+        });
+
+        document.getElementById('update-attendance-btn').addEventListener('click', function() {
+            document.getElementById('attendance-form-section').style.display = 'none';
+            document.getElementById('update-attendance-form-section').style.display = 'block';
+        });
+
+        // Handling Mark Attendance form submission
+        document.getElementById('attendance-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Collect data from the form
+            const date = document.getElementById('attendance-date').value;
+            const employeeID = document.getElementById('employee-id').value;
+            const inTime = document.getElementById('in-time').value;
+            const outTime = document.getElementById('out-time').value;
+
+            if (!date || !employeeID || !inTime || !outTime) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            // Retrieve existing employees from localStorage
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            const employee = employees.find(emp => emp.id === employeeID);
+
+            if (!employee) {
+                alert("Employee ID not found!");
+                return;
+            }
+
+            // Retrieve existing attendance records from localStorage
+            let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+
+            // Check if the attendance record for this employee and date already exists
+            const existingRecord = attendanceRecords.find(record => record.employeeID === employeeID && record.date === date);
+
+            if (existingRecord) {
+                alert('Attendance already marked for this date.');
+            } else {
+                // Create the attendance record
+                const attendanceRecord = {
+                    date,
+                    employeeID,
+                    inTime,
+                    outTime
+                };
+                attendanceRecords.push(attendanceRecord);
+                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+                alert('Attendance submitted successfully!');
+            }
+
+            document.getElementById('attendance-form').reset();
+        });
+
+        // Handling Update Attendance form submission
+        document.getElementById('update-attendance-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Collect data from the form
+            const employeeID = document.getElementById('update-employee-id').value;
+            const date = document.getElementById('update-attendance-date').value;
+            const updatedInTime = document.getElementById('update-in-time').value;
+            const updatedOutTime = document.getElementById('update-out-time').value;
+
+            if (!employeeID || !date || (!updatedInTime && !updatedOutTime)) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            // Retrieve existing attendance records from localStorage
+            let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+
+            // Find the attendance record to update
+            const existingRecord = attendanceRecords.find(record => record.employeeID === employeeID && record.date === date);
+
+            if (existingRecord) {
+                // Update the attendance record
+                if (updatedInTime) existingRecord.inTime = updatedInTime;
+                if (updatedOutTime) existingRecord.outTime = updatedOutTime;
+
+                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+                alert('Attendance updated successfully!');
+            } else {
+                alert('Attendance record not found for the given Employee ID and Date.');
+            }
+
+            document.getElementById('update-attendance-form').reset();
+        });
+    </script>
+
+</body>
+</html>

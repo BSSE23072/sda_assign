@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <style>
+            
+        .gradient-text {
+            background: linear-gradient(to right, lightcoral, lightblue, lightgreen, lightpink, lightyellow);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+    body {
+      background-image: url('b.jpg'); 
+      background-size: cover; 
+      background-position: center;
+      background-repeat: no-repeat; 
+      background-attachment: fixed; 
+      margin: 0; 
+      height: 100vh; 
+    }
+
+    </style>
+</head>
+<body style="background-color: #000">
+    <header class="header">
+        <img src="logo.png">
+       
+        <nav>
+            <a href="dashboard.html" style="color: rgb(168, 166, 166); margin: 0 15px; text-decoration: none;">Home</a>
+            <a href="aboutus.html" style="color: rgb(136, 134, 134); margin: 0 15px; text-decoration: none;">About</a>
+            <a href="contacts.html" style="color: rgb(146, 146, 146); margin: 0 15px; text-decoration: none;">Contact</a>
+        </nav>
+    </header>
+<h1 class="fs-1 text-center gradient-text" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: 110px; margin-left: 0px; margin-bottom: 100px;">
+    WELCOME TO HRM!
+</h1>
+<div  class=" container" style="display: inline flex;">
+<div class="card " style="width: 300px; height:300px; margin-left: 310px; background-color:rgb(4, 138, 4)" > 
+    <div class="card-header" style="color: aliceblue;">Employees List</div>
+    <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+    <p style="color: aliceblue; padding-left: 3px;"  >Here's the list of employees who have joined the corporation.The page also contains the personal data and all other related information about the employees.</p>
+    
+    <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+    <a href="employees-list.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Employees!</a>
+
+
+</div>
+<div class="card " style="width: 300px; height:300px; margin-left: 200px; background-color: rgb(4, 138, 4)" > 
+    <div class="card-header" style="color: aliceblue;">Employee Addition</div>
+    <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+    <p style="color: aliceblue; padding-left:3px;"  >From here You can add the data of the new employess into the employees list.</p>
+    
+    <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+    <a href="employee.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Add Employee!</a>
+
+
+</div>
+</div>
+
+<div style="display: inline flex; margin-top: 50px;">
+    <div class="card " style="width: 300px; height:300px; margin-left: 310px; background-color: rgb(4, 138, 4);" > 
+        <div class="card-header" style="color: aliceblue;">Mark Attendance</div>
+        <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+        <p style="color: aliceblue; padding-left: 3px;"  >From here you can mark the attendance and the reporting time and the departure time of the employee for the current date.</p>
+        
+        <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+        <a href="mark-attendance.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Mark!</a>
+    
+    
+    </div>
+    <div class="card " style="width: 300px; height:300px; margin-left: 200px; background-color: rgb(4, 138, 4)" > 
+        <div class="card-header" style="color: aliceblue;">Employee Salary</div>
+        <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+        <p style="color: aliceblue; padding-left:3px;"  >From here you can manage the monthly payroll of the employees or can also see the history of the employees payments.</p>
+        
+        <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+        <a href="employee-salary.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Check!</a>
+    
+    
+    </div>
+    </div>
+    <div style="display: inline flex; margin-top: 50px;">
+        <div class="card " style="width: 300px; height:300px; margin-left: 310px; background-color:rgb(4, 138, 4)" > 
+            <div class="card-header" style="color: aliceblue;">Projects</div>
+            <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+            <p style="color: aliceblue; padding-left: 3px;"  >From here you can check the current projects that have not been completed yet and the history of the projects. you can also cheaque which employees are involved in the working of the project.</p>
+            
+            <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+            <a href="projects.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Check!</a>
+        
+        
+        </div>
+        <div class="card " style="width: 300px; height:300px; margin-left: 200px; background-color:rgb(4, 138, 4) " > 
+            <div class="card-header" style="color: aliceblue;">Employee Performance</div>
+            <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+            <p style="color: aliceblue; padding-left:3px;"  >From here you can check the Performance of the employees in the current running projects or in the projects history.</p>
+            
+            <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+            <a href="employee-performance.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Check!</a>
+        
+        
+        </div>
+        </div>
+
+        <div style="display: inline flex; margin-top: 50px;">
+            <div class="card " style="width: 300px; height:300px; margin-left: 310px; background-color:rgb(4, 138, 4)" > 
+                <div class="card-header" style="color: aliceblue;">Attendance Records</div>
+                <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+                <p style="color: aliceblue; padding-left: 3px;"  >From here you can view the attendance of the employees working in the comapny.</p>
+                
+                <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+                <a href="viewAttendance.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Check!</a>
+            
+            
+            </div>
+            <div class="card " style="width: 300px; height:300px; margin-left: 200px; background-color:rgb(4, 138, 4) " > 
+                <div class="card-header" style="color: aliceblue;">Sign Up Info</div>
+                <h5 class="card-title" style="color: aliceblue;">&nbsp; Description</h5>
+                <p style="color: aliceblue; padding-left:3px;"  >From here you can check the list of the persons who have registered in this website.</p>
+                
+                <p style="color: aliceblue; padding-left: 3px;" >Click here:</p>
+                <a href="signup-person.html"  class="btn btn-primary" style="margin-top: 10px; background-color: black; width: 120px; margin-left: 150px; border-color: #5d702e;">Check!</a>
+            
+            
+            </div>
+            </div>
+</body>
+
+</body>
+</html>

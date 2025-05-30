@@ -1,0 +1,171 @@
+ Logcal storage logic for adding employee:      
+        // Add event listener to capture form submission
+        document.getElementById('employeeForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form reload
+    
+            // Collect data from form fields
+            const fullName = document.getElementById('F-1').value;
+            const gender = document.getElementById('gender').value;
+            const dob = document.getElementById('dob').value;
+            const contact1 = document.getElementById('contact1').value;
+            const contact2 = document.getElementById('contact2').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const jobTitle = document.getElementById('jobTitle').value;
+            const department = document.getElementById('department').value;
+            const manager = document.getElementById('manager').value;
+            const employeeType = document.getElementById('employeeType').value;
+            const hiringDate = document.getElementById('hiringDate').value;
+    
+            // Generate unique ID for the employee
+            const employeeID = generateEmployeeID();
+    
+            // Create employee object with the generated ID
+            const newEmployee = {
+                id: employeeID, // Add the generated ID
+                fullName, gender, dob, contact1, contact2, email, address, 
+                jobTitle, department, manager, employeeType, hiringDate
+            };
+    
+            // Retrieve existing employees or initialize as an empty array
+            let employees = JSON.parse(localStorage.getItem('employees')) || [];
+    
+            // Add the new employee to the array
+            employees.push(newEmployee);
+    
+            // Save the updated list to localStorage
+            localStorage.setItem('employees', JSON.stringify(employees));
+    
+            // Reset the form fields
+            document.getElementById('employeeForm').reset();
+            alert('Employee added successfully!');
+        });
+Here are all the local storage functions for the employee-list.html 
+        // Retrieve employee data from localStorage
+        const employees = JSON.parse(localStorage.getItem('employees')) || [];
+
+        // Function to generate a unique alphanumeric ID
+        function generateEmployeeID() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+
+        // Function to add a new employee
+function addEmployee(employee) {
+    // Ensure employee has an ID generated
+    employee.id = generateEmployeeID();
+
+    // Add the employee to the employees array
+    employees.push(employee);
+
+    // Save the updated employees array back to localStorage
+    localStorage.setItem('employees', JSON.stringify(employees));
+
+    // Re-populate the table with the updated data
+    populateEmployeeTable();
+}
+
+// Assuming there's a form for adding employees, make sure you call this addEmployee() function when the form is submitted
+
+        // Function to populate the employee list table
+        function populateEmployeeTable() {
+            const tableBody = document.getElementById('employeeTableBody');
+            tableBody.innerHTML = ''; // Clear the existing rows
+
+            if (employees.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="13" class="text-center">No employees found</td></tr>`;
+            } else {
+                employees.forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.id}</td>
+                        <td>${employee.fullName}</td>
+                        <td>${employee.gender}</td>
+                        <td>${employee.dob}</td>
+                        <td>${employee.contact1}</td>
+                        <td>${employee.contact2}</td>
+                        <td>${employee.email}</td>
+                        <td>${employee.address}</td>
+                        <td>${employee.jobTitle}</td>
+                        <td>${employee.department}</td>
+                        <td>${employee.manager}</td>
+                        <td>${employee.employeeType}</td>
+                        <td>${employee.hiringDate}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        // Function to search employees by any field including ID
+        function searchEmployees() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filteredEmployees = employees.filter(employee => {
+                return Object.values(employee).some(value => 
+                    String(value).toLowerCase().includes(searchTerm)
+                );
+            });
+
+            // Clear the table and repopulate with filtered data
+            const tableBody = document.getElementById('employeeTableBody');
+            tableBody.innerHTML = ''; // Clear the existing rows
+
+            if (filteredEmployees.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="13" class="text-center">No matching employees found</td></tr>`;
+            } else {
+                filteredEmployees.forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.id}</td>
+                        <td>${employee.fullName}</td>
+                        <td>${employee.gender}</td>
+                        <td>${employee.dob}</td>
+                        <td>${employee.contact1}</td>
+                        <td>${employee.contact2}</td>
+                        <td>${employee.email}</td>
+                        <td>${employee.address}</td>
+                        <td>${employee.jobTitle}</td>
+                        <td>${employee.department}</td>
+                        <td>${employee.manager}</td>
+                        <td>${employee.employeeType}</td>
+                        <td>${employee.hiringDate}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        // Function to delete employee by ID
+        function deleteEmployeeByID(id) {
+            const index = employees.findIndex(emp => emp.id === id);
+
+            if (index !== -1) {
+                // Remove the employee from the array
+                employees.splice(index, 1);
+
+                // Save the updated list back to localStorage
+                localStorage.setItem('employees', JSON.stringify(employees));
+
+                // Re-populate the employee table to reflect the changes
+                populateEmployeeTable();
+                alert('Employee deleted successfully!');
+            } else {
+                alert('Employee with this ID not found!');
+            }
+        }
+
+        // Event listener for the form submission
+        document.getElementById('delete-employee-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the ID entered by the user
+            const id = document.getElementById('employee-id').value;
+
+            // Call the function to delete the employee by ID
+            deleteEmployeeByID(id);
+
+            // Clear the input field after deletion
+            document.getElementById('employee-id').value = '';
+        });
+
+        // Populate table when the page loads
+        window.onload = populateEmployeeTable;

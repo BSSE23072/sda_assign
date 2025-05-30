@@ -1,0 +1,23 @@
+   $('#signupForm').on('submit', function (e) {
+      e.preventDefault();
+
+      const fullName = $('#F-1').val();
+      const email = $('#F-2').val();
+      const username = $('#F-4').val();
+      const password = $('#F-3').val();
+      const confirmPassword = $('#F-5').val();
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+      }
+
+      const newUser = { fullName, email, username, password };
+      const users = JSON.parse(localStorage.getItem('usersList')) || [];
+      users.push(newUser);
+      localStorage.setItem('usersList', JSON.stringify(users));
+
+      alert('Registration successful!');
+      this.reset();
+      window.location.href = 'login.html';
+    });

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Performance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            background-image: url('111.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            height: 100vh;
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        .star-rating {
+            direction: rtl;
+            display: inline-block;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 30px;
+            color: #ddd;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating input:hover ~ label {
+            color: gold;
+        }
+        .suggestions {
+            border: 1px solid #000000;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            background-color: rgb(143, 21, 21);
+            width: 200px;
+        }
+
+        .suggestions div {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .suggestions div:hover {
+            background-color: #f0f0f0;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header Section (reusable) -->
+    <header class="header" style="background-color: rgba(0, 0, 0, 0.6); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <img src="logo.png" alt="HRM Logo" style="height: 50px;">
+        <nav>
+            <a href="dashboard.html" style="color: aliceblue; margin: 0 15px; text-decoration: none; font-size: 18px;">Back to Dashboard</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1 class="text-center">Employee Performance</h1>
+        <form id="performance-form">
+            <div class="mb-3">
+                <label for="employee-id" class="form-label">Employee ID</label>
+                <input type="text" class="form-control" id="employee-id" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="performance-rating" class="form-label">Performance Rating (1-5)</label>
+                <!-- 5-Star Rating System -->
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5">
+                    <label for="star5">&#9733;</label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4">&#9733;</label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3">&#9733;</label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2">&#9733;</label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1">&#9733;</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-light" style="width: 100%;">Submit Performance</button>
+        </form>
+    </div>
+
+    <!-- Display the List of Employee Ratings -->
+    <div class="container mt-5">
+        <h2 class="text-center">Employee Performance Ratings</h2>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Employee ID</th>
+                    <th scope="col">Rating</th>
+                </tr>
+            </thead>
+            <tbody id="performance-table-body">
+                <!-- Dynamically filled with employee rating data -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            // This can be replaced with your own array of Employee IDs if needed
+            const employeeIDs = ['101', '102', '103', '104'];
+
+            $('#employee-id').on('input', function(){
+                const query = $(this).val();
+                $('#suggestions').empty();  // Clear previous suggestions
+
+                if(query) {
+                    const filteredSuggestions = employeeIDs.filter(function(id){
+                        return id.toLowerCase().includes(query.toLowerCase());
+                    });
+
+                    filteredSuggestions.forEach(function(id) {
+                        $('#suggestions').append('<div>' + id + '</div>'); 
+                    });
+
+                    $('#suggestions div').on('click', function() {
+                        $('#employee-id').val($(this).text()); 
+                        $('#suggestions').empty();  
+                    });
+                }
+            });
+        });
+
+        // Function to retrieve and display the performance data from localStorage
+        function populatePerformanceTable() {
+            const performanceData = JSON.parse(localStorage.getItem('employeePerformance')) || [];
+            const tableBody = document.getElementById('performance-table-body');
+            tableBody.innerHTML = ''; 
+
+            if (performanceData.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="2" class="text-center">No performance data available</td></tr>`;
+            } else {
+                performanceData.forEach(performanceEntry => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = ` 
+                        <td>${performanceEntry.employeeID}</td>
+                        <td>${performanceEntry.rating}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        // Handle performance submission form
+        document.getElementById('performance-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const employeeID = document.getElementById('employee-id').value;
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+
+            if (employeeID && rating) {
+                const performanceEntry = { employeeID, rating };
+
+                let performanceData = JSON.parse(localStorage.getItem('employeePerformance')) || [];
+                performanceData.push(performanceEntry);
+
+                localStorage.setItem('employeePerformance', JSON.stringify(performanceData));
+
+                document.getElementById('employee-id').value = '';
+                document.querySelector('input[name="rating"]:checked').checked = false;
+
+                populatePerformanceTable();
+            }
+        });
+
+        // Populate performance table when the page loads
+        window.onload = populatePerformanceTable;
+
+    </script>
+
+</body>
+</html>
